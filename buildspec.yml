@@ -11,7 +11,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - docker build -f Dockerfile -t php-image:tag .
+      - docker build -f Dockerfile -t php-image:v1 .
       - docker tag php-image:v1 140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository:v1
       - docker push 140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository:v1
       - echo Build ended on `date`
