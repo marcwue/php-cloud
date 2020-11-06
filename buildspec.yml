@@ -17,4 +17,5 @@ phases:
       - printf '[{"name":"myContainerFargate","imageUri":"140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository"}]' > imagedefinitions.json
 artifacts:
   files:
-    - .
+    source: /
+    destination: /
