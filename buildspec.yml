@@ -10,7 +10,10 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - echo Nothing to do for build
+      - docker build -f Dockerfile -t php-image:tag .
+      - docker tag php-image:tag 140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository:tag
+      - docker push 140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository:tag
+      - echo Build ended on `date`
   post_build:
     commands:
       - echo Build completed on `date`
