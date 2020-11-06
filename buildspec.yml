@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      php: 7.3
+  pre_build:
+    commands:
+      - echo Nothing to do in the pre_build phase...
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Nothing to do for build
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - printf '[{"name":"myContainerFargate","imageUri":"140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository"}]' > imagedefinitions.json
+artifacts:
+  files:
+
+    - imagedefinitions.json
