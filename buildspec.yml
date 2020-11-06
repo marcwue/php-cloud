@@ -19,4 +19,3 @@ artifacts:
     files:
       - '**/*'
       - imagedefinitions.json
-    base-directory: 'php-cloud'
