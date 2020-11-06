@@ -12,13 +12,13 @@ phases:
     commands:
       - echo Build started on `date`
       - docker build -f Dockerfile -t php-image:tag .
-      - docker tag php-image:tag 140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository:tag
-      - docker push 140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository:tag
+      - docker tag php-image:v1 140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository:v1
+      - docker push 140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository:v1
       - echo Build ended on `date`
   post_build:
     commands:
       - echo Build completed on `date`
-      - printf '[{"name":"myContainerFargate","imageUri":"140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository"}]' > imagedefinitions.json
+      - printf '[{"name":"php-image:v1","imageUri":"140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository"}]' > imagedefinitions.json
 artifacts:
     files:
       - '**/*'
