@@ -18,7 +18,7 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - printf '[{"name":"v1","imageUri":"140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository"}]' > imagedefinitions.json
+      - printf '[{"name":"myContainerFargate","imageUri":"140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository"}]' > imagedefinitions.json
 artifacts:
     files:
       - '**/*'
