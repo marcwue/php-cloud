@@ -16,6 +16,7 @@ phases:
       - echo Build completed on `date`
       - printf '[{"name":"myContainerFargate","imageUri":"140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository"}]' > imagedefinitions.json
 artifacts:
-  files:
-    source: /
-    destination: /
+    files:
+      - '**/*'
+      - imagedefinitions.json
+    base-directory: 'php-cloud'
