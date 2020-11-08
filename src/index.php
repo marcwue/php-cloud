@@ -22,8 +22,13 @@ function getImagesAndLinks(str) {
       document.getElementById("responseHtml").innerHTML = '';
       let parsedText;
       if (this.responseText !== '') {
-        JSON.parse(this.responseText).forEach(element => {
+      let parsedResponse = JSON.parse(this.responseText);
+        parsedResponse.links.forEach(element => {
           document.getElementById("responseHtml").innerHTML += '<a href="' + element.href + '">' + element.text + '</a>';
+          document.getElementById("responseHtml").innerHTML += '<br>';
+        });
+        parsedResponse.images.forEach(element => {
+          document.getElementById("responseHtml").innerHTML += '<img src="' + element.src + '" alt="' + element.altText + '">';
           document.getElementById("responseHtml").innerHTML += '<br>';
         });
       }
