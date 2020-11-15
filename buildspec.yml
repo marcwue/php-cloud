@@ -3,22 +3,31 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      php: 7.3
+      docker: 19
   pre_build:
     commands:
-      - echo Nothing to do in the pre_build phase...
-      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 140042960823.dkr.ecr.us-east-1.amazonaws.com
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - echo AWS_DEFAULT_REGION $AWS_DEFAULT_REGION
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - REPOSITORY_URI=140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - echo COMMIT_HASH $COMMIT_HASH
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - echo IMAGE_TAG $IMAGE_TAG
   build:
     commands:
       - echo Build started on `date`
-      - docker build -f Dockerfile -t php-image:v1 .
-      - docker tag php-image:v1 140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository:v1
-      - docker push 140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository:v1
-      - echo Build ended on `date`
+      - echo Building the Docker image...
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
-      - printf '[{"name":"myContainerFargate","imageUri":"140042960823.dkr.ecr.us-east-1.amazonaws.com/my-repository@sha256:0e60cfc242ac53b4d8fd50ff1022fe91acdc5f20a871f386139c532fb02068bf"}]' > imagedefinitions.json
+      - echo Pushing the Docker image
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - printf '[{"name":"myContainerFargate","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
     files:
       - '**/*'
