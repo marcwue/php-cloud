@@ -6,11 +6,13 @@ include 'model/siteContentModel.php';
 class CrawlerComponent {
 
   function getSiteContent($website){
+    error_log("getSiteContent start", 0);
     $html = file_get_contents($website);
     $htmlDom = new DOMDocument;
     @$htmlDom->loadHTML($html);
 
     $links = $htmlDom->getElementsByTagName('a');
+    error_log("links=" . print_r($links, true), 0);
     $extractedLinks = array();
     foreach($links as $link){
       $linkText = $link->nodeValue;
@@ -26,6 +28,7 @@ class CrawlerComponent {
     }
 
     $images = $htmlDom->getElementsByTagName('img');
+    error_log("images=" . print_r($images, true), 0);
     $extractedImages = array();
     foreach($images as $image){
       $altText = $image->getAttribute('alt');
@@ -36,6 +39,7 @@ class CrawlerComponent {
       }
       $extractedImages[] = new Image($altText, $website . $src);
     }
+    error_log("getSiteContent end", 0);
     return new SiteContentModel($extractedLinks, $extractedImages);
   }
 }
