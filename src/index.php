@@ -1,7 +1,7 @@
 <html>
     <body>
         <h1>Enter a website to see the links and images</h1>
-        Website: <input type="text" id="websiteText" value="http://www.google.de">
+        Website: <input type="text" id="websiteText" value="http://www.wikipedia.de">
         <br>
         <button id="submitButton" onclick="getImagesAndLinks(this.value)">submit</button>
         <br>

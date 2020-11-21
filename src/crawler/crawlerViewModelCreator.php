@@ -10,17 +10,24 @@ class CrawlerViewModelCreator {
 
     $extractedLinks = array();
     foreach($linksAndImages->getLinks() as $link){
-      $extractedLinks[] = new LinkViewModel($link->getText(), $link->getHref());
+      $extractedLinks[] = new LinkViewModel(utf8_encode($link->getText()), $link->getHref());
     }
 
     $extractedImages = array();
     foreach($linksAndImages->getImages() as $image){
-      $extractedImages[] = new ImageViewModel($image->getAltText(), $image->getSrc());
+      if ($image->getSrc() !== "" && substr($image->getSrc(), 0, strlen('http')) === 'http') {
+        $src = $image->getSrc();
+      } else {
+        if ($image->getSrc() !== "" && substr($image->getSrc(), 0, strlen('/')) === '/') {
+          $src = $linksAndImages->getWebsite() . $image->getSrc();
+        } else {
+          $src = $linksAndImages->getWebsite() . '/' . $image->getSrc();
+        }
+      }
+      $extractedImages[] = new ImageViewModel(utf8_encode($image->getAltText()), $src);
     }
 
     $siteContentViewModel = new SiteContentViewModel($extractedLinks, $extractedImages);
-    error_log("siteContentViewModel=" . print_r($siteContentViewModel, true), 0);
-
     $siteContentViewModelEncoded = json_encode($siteContentViewModel);
     error_log("siteContentViewModelEncoded=" . print_r($siteContentViewModelEncoded, true), 0);
     return $siteContentViewModelEncoded;

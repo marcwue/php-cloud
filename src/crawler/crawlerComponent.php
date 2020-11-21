@@ -12,12 +12,12 @@ class CrawlerComponent {
     @$htmlDom->loadHTML($html);
 
     $links = $htmlDom->getElementsByTagName('a');
-    error_log("links=" . print_r($links, true), 0);
     $extractedLinks = array();
     foreach($links as $link){
       $linkText = $link->nodeValue;
       $linkHref = $link->getAttribute('href');
 
+      error_log(print_r($linkText . ' - ' . $linkHref, true), 0);
       if(strlen(trim($linkHref)) == 0){
          continue;
       }
@@ -28,19 +28,19 @@ class CrawlerComponent {
     }
 
     $images = $htmlDom->getElementsByTagName('img');
-    error_log("images=" . print_r($images, true), 0);
     $extractedImages = array();
     foreach($images as $image){
       $altText = $image->getAttribute('alt');
       $src = $image->getAttribute('src');
 
+      error_log(print_r($altText . ' - ' . $src, true), 0);
       if(strlen(trim($src)) == 0){
           continue;
       }
-      $extractedImages[] = new Image($altText, $website . $src);
+      $extractedImages[] = new Image($altText, $src);
     }
     error_log("getSiteContent end", 0);
-    return new SiteContentModel($extractedLinks, $extractedImages);
+    return new SiteContentModel($website, $extractedLinks, $extractedImages);
   }
 }
 

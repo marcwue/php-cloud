@@ -2,13 +2,18 @@
 
 class SiteContentModel {
 
-  private $website; // Todo
+  private $website;
   private $links = array();
   private $images = array();
 
-  function __construct($links, $images){
+  function __construct($website, $links, $images){
+    $this->website = $website;
     $this->links = $links;
     $this->images = $images;
+  }
+
+  public function getWebsite() {
+    return $this->website;
   }
 
   public function getLinks() {
